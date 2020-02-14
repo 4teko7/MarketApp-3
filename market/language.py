@@ -92,7 +92,7 @@ tr = {
     'phone':"Telefon",
     'profilImageUpdated':"Profil Fotoğrafı Güncellendi.",
     'productNotFound':"Ürün Bulunamadı.",
-
+    'loginWithGoogle':"Gmail İle Giriş",
 
 
 # MESSAGES
@@ -220,6 +220,8 @@ en = {
     'phone':"Phone",
     'profilImageUpdated':"Profil Image Updated",
     'productNotFound':"Product Not Found",
+    'loginWithGoogle':"Login With Google",
+
 
 # MESSAGES
     'noCurrentProduct': "Currently There is no any Order",

@@ -33,12 +33,17 @@ def about(req,id):
     check(req)
     global context
     user = User.objects.get(id = id)
-    profile = UserProfile.objects.filter(user = user)
+    profile = UserProfile.objects.get(user = user)
     if(profile):
-        if(profile[0].profileImage):
-            context['profileImage'] = profile[0].profileImage
-        context['profile'] = profile[0]
+        if(profile.profileImage):
+            context['profileImage'] = profile.profileImage
+        if(not profile.firstName and not profile.lastName):
+            profile.firstName = user.first_name
+            profile.lastName = user.last_name
+            profile.save()
+        context['profile'] = profile
         context['user'] = user
+
     return render(req,"about.html",context)
 
 def registerUser(req):

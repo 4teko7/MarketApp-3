@@ -64,7 +64,6 @@ def mainPage(req):
     completedOrders = ""
     if(req.user.is_authenticated):
         profile = UserProfile.objects.filter(user = req.user)
-        print(profile[0].user)
         
         if(profile):
             currentOrders = profile[0].currentOrders
@@ -113,6 +112,7 @@ def language(req):
 
 
 urlpatterns = [
+    url('^api/v1/',include('social_django.urls',namespace='social')),
     url(r'admin/', admin.site.urls),
     url('users/', include("users.userRoutes")),
     url("products/",include("product.productRoutes")),

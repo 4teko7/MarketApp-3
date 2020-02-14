@@ -10,9 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
+
+# encoding=utf8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+
 import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_CHARSET = 'utf-8'
 
@@ -47,8 +54,15 @@ INSTALLED_APPS = [
     'order',
     'ingredient',
     'guests',
+    'social_django',
 
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend')
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,10 +88,23 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
 ]
+
+LOGIN_URL = '/auth/login/google-oauth2/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '551449211818-7efsoiuu8o0ut3lmc3s87nnbs0vbmqsn'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'hIrzDJDN3qo9pW8R-1NMZ2yo'
+
+SOCIAL_AUTH__KEY = 'ID'
+SOCIAL_AUTH__SECRET = 'SECRET'
 
 
 WSGI_APPLICATION = 'market.wsgi.application'
