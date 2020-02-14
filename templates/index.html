@@ -1,0 +1,413 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block body %}
+
+
+    <style>
+      
+        @media only screen and (max-width: 600px) {
+            #smallScreen {
+              display: block;
+            }
+            #largeScreen {
+                display: none;
+              }
+          }
+          @media only screen and (min-width: 600px) {
+            #smallScreen {
+                display: none;
+              }
+              #largeScreen {
+                  display: block;
+                }
+          }
+
+        #bg {
+          /* The image used */
+
+          /* Full height */
+          height: 100%;
+        background-color: powderblue;
+
+        }
+        
+        </style>
+
+    {% if request.user.is_authenticated %}
+<div  id = "bg">
+<div class="container"   style = "margin : auto auto;text-align:center;" >
+<br>
+        <h2>{{lang.welcome}}, {% if request.user.is_authenticated %} {{ request.user.username }}  {% endif %}
+          {% if profileImage %}
+                <div class = "container col-lg-6 col-xs-12 col-md-6" align="middle" style = " margin : auto auto; display:inline;">
+                        <strong><img style = " max-width: 375px; overflow: hidden; width:6rem; height:6rem;"  class = "rounded-circle" src = "{{profileImage.url}}"></strong>
+                        </div>
+              {% endif %}
+        </h2>
+        <hr>
+        
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-xs-12" >
+            
+            
+              
+        {% if not user.is_superuser %} 
+        <div class="row">
+          
+        <div class="col-md-6 col-lg-6 col-xs-12" style = "margin-top:1rem;">
+          <a href = "/products/allproducts/"><scan style = "font-size:1.4rem;"><strong>{{lang.orderProduct}}</strong><br><img style = "width:6rem;height:6rem;"src={% static 'img/products.png' %}></scan></a>
+        </div>
+        
+        <div class="col-md-6 col-lg-6 col-xs-12"><br>
+          <a href = "/users/about/{{request.user.id}}/"><scan style = "font-size:1.4rem;"><strong>{{lang.myProfile}}</strong><br><img style = "width:6rem;height:6rem;"src={% static 'img/about.png' %}></scan></a>
+        </div>
+        
+        <div class="col-md-12 col-lg-12 col-sm-12 container" style = "margin : auto auto;">
+          <form action = '/products/searchproduct/' class="form-inline">
+            <div class="container" id = "smallScreen"><br>
+            <input class="form-control mr-sm-2 " name = "keywords1" style = "text-align:center;" type="text" placeholder="{{lang.searchProduct}}" aria-label="Search"><br>
+            <button class="btn btn-outline-success" style = "text-align:center;" type="submit">{{lang.search}}</button>
+          </div>
+          <div class="container" id = "largeScreen"><br>
+            <input class="form-control mr-sm-2 " name = "keywords2" style = "text-align:center;" type="text" placeholder="{{lang.searchProduct}}" aria-label="Search">
+            <button class="btn btn-outline-success" style = "text-align:center;" type="submit">{{lang.search}}</button>
+          </div>
+        </form>
+        </div>
+        </div>
+      
+
+      
+
+        {% endif %}
+        <br>
+      </div>
+
+
+      <!-- MOST SOLD ITEMS -->
+      
+      <div style = "width:100%;">
+        <div id="myCarousel" class="carousel slide bg-inverse w-50 ml-auto mr-auto" data-ride="carousel">
+          <h4 stlye = "color:yellow; font-weight:bolder;  text-align:center;">En Çok Satılan Ürünler</h4>
+        <hr>
+          <ol class="carousel-indicators">
+            
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+          </ol>
+          <div class="carousel-inner" role="listbox" style = "width: 100%;">
+            <div class="carousel-item active" style = "width: 100%;">
+              <a href="/products/productdetail/{{firstSold.id}}/"><img class="d-block center" src="{{firstSold.productImage.url}}" alt="First slide"   style = "width:25rem; margin:auto auto; max-width: 100%;"></a>
+            </div>
+            {% for product in mostSoldProducts %}
+        
+              <div class="carousel-item">
+                <a href="/products/productdetail/{{product.id}}/"><img class="d-block " src="{{product.productImage.url}}" alt="Second slide"  style = "width:25rem; margin:auto auto; max-width: 100%; "></a>
+              </div>
+        
+        
+              {% endfor %}
+        
+          </div>
+          <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+          </a>
+        </div>
+        
+        <br>
+        
+      </div>
+  
+  
+  <!-- MOST SOLD ITEMS END -->
+
+
+
+      <div class="col-md-12 col-lg-12 col-xs-12" >
+        {% if user.is_superuser %}
+        <div class="row">
+        <div  class="col-md-6 col-lg-6 col-xs-6" style = "margin-bottom:1rem;">
+          <a href = "/products/allproducts/"><scan style = "font-size:1.4rem;"><strong>{{lang.orderProduct}}</strong><br><img style = "width:6rem;height:6rem;"src={% static 'img/products.png' %}></scan></a>
+          </div>
+        
+        <div class="col-md-6 col-lg-6 col-xs-6">
+          <a href = "/products/allorders/"><scan style = "font-size:1.4rem;"><strong>{{lang.allOrders}}</strong><br><img style = "width:6rem;height:6rem;"src={% static 'img/orders.png' %}></scan></a>
+        </div>
+      </div>
+
+      <div class="col-md-12 col-lg-12 col-sm-12 container" style = "margin : auto auto;">
+        <form action = '/products/searchproduct/' class="form-inline">
+          <div class="container" id = "smallScreen"><br>
+          <input class="form-control mr-sm-2 " name = "keywords1" style = "text-align:center;" type="text" placeholder="{{lang.searchProduct}}" aria-label="Search"><br>
+          <button class="btn btn-outline-success" style = "text-align:center;" type="submit">{{lang.search}}</button>
+        </div>
+        <div class="container" id = "largeScreen"><br>
+          <input class="form-control mr-sm-2 " name = "keywords2" style = "text-align:center;" type="text" placeholder="{{lang.searchProduct}}" aria-label="Search">
+          <button class="btn btn-outline-success" style = "text-align:center;" type="submit">{{lang.search}}</button>
+        </div>
+      </form>
+      </div>
+
+    </div>
+        {% endif %}
+      
+            
+            <div class="col-md-12 col-lg-12 col-xs-12" id = "smallScreen">
+
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col" style = "word-wrap: break-word;">{{lang.editProfile}}</th>
+                    <th scope="col" style = "word-wrap: break-word;">{{lang.changePassword}}</th>
+                    
+                  </tr>
+                </thead>
+
+                <tbody>
+                    <hr>
+                    <tr>
+                        
+                        <td> <a href = "/users/editprofile/"><img style = "width:6rem;height:6rem;"src={% static 'img/editProfile.png' %}></a></td>
+                        <td>  <a href = "/users/changepassword/"><img style = "width:6rem;height:6rem;"src={% static 'img/password.png' %}></a></td>
+                    </tr>
+
+
+                    <thead>
+                        <tr>
+                            <th scope="col" style = "word-wrap: break-word;">{{lang.changeUsername}}</th>
+                            <th scope="col" style = "word-wrap: break-word;">{{lang.changeProfilFoto}}</th>
+                          
+                        </tr>
+                      </thead>
+
+                    <tr>
+
+
+                        <td><a href = "/users/changeusername/"><img style = "width:8rem;height:8rem;"src={% static 'img/username.png' %}></a></td>
+                        <td><a href = "/users/addprofileimage/"><img style = "width:6rem;height:6rem;"src={% static 'img/profileFoto.png' %}></a></td>
+                    
+                        </tr>
+                    
+                    </tbody>
+                    </table>
+                </div>
+                    <div  class="col-md-12 col-lg-12 col-xs-12" id = "largeScreen">
+
+                        <table class="table table-bordered">
+                            <thead>
+                              <tr>
+                                <th scope="col" style = "word-wrap: break-word;">{{lang.editProfile}}</th>
+                                <th scope="col" style = "word-wrap: break-word;">{{lang.changePassword}}</th>
+                                <th scope="col" style = "word-wrap: break-word;">{{lang.changeUsername}}</th>
+                                <th scope="col" style = "word-wrap: break-word;">{{lang.changeProfilFoto}}</th>
+                              </tr>
+                            </thead>
+            
+                            <tbody>
+                                <hr>
+                                    <tr>
+                                        
+                                        <td> <a href = "/users/editprofile/"><img style = "width:6rem;height:6rem;"src={% static 'img/editProfile.png' %}></a></td>
+                                        <td>  <a href = "/users/changepassword/"><img style = "width:6rem;height:6rem;"src={% static 'img/password.png' %}></a></td>
+                                        <td><a href = "/users/changeusername/"><img style = "width:8rem;height:8rem;"src={% static 'img/username.png' %}></a></td>
+                                        <td><a href = "/users/addprofileimage/"><img style = "width:6rem;height:6rem;"src={% static 'img/profileFoto.png' %}></a></td>
+                                    
+                                        </tr>
+            
+            
+                                </tbody>
+            
+                                </table>
+                </div>
+
+    </div>
+       
+        <!-- <br><hr style = "background-color: red; width:100%; height:0.1rem; border-radius:50%;"><br> -->
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- CURRENT ORDERS -->
+
+
+    <div class="col-md-6 col-lg-6 col-xs-12"  style = "margin : auto auto;">
+        <!-- RECENT comingTodos  -->
+   <hr>
+        <br><br>
+        <h3>{{lang.currentOrders}}</h3>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">{{lang.amount}}</th>
+                <th scope="col" style = "word-wrap: break-word;">{{lang.productTitle}}</th>
+                <th scope="col" style = "word-wrap: break-word;">{{lang.orderStatus}}</th>
+              </tr>
+            </thead>
+            <tbody>
+                <hr>
+
+                {% if currentOrders %}
+                     {% for currentOrder in currentOrders %}
+                        <tr>
+                        <th scope="row">{{currentOrder.productAmount}}</th>
+                        <td><a href = "/products/productdetail/{{currentOrder.product.id}}/">{{currentOrder.title}}</a></td>
+                        <td>{{currentOrder.orderStatus}}</td>
+                        </tr>
+                    {% endfor %}
+            {% else %}
+                    <div class="alert alert-warning">
+                        {{lang.noCurrentProduct}}
+                    </div>
+            {% endif %}
+
+            </tbody>
+        </table>
+        <!-- <br><hr style = "background-color: red; width:100%; height:0.1rem; border-radius:50%;"><br> -->
+        <br><br>
+
+    </div>
+    <!-- CURRENT ORDERS END. -->
+
+    <!-- COMPLETED ORDERS -->
+
+
+    <div class="col-md-6 col-lg-6 col-xs-12"  style = "margin : auto auto;">
+      <!-- RECENT comingTodos  -->
+ <hr>
+      <br><br>
+      <h3>{{lang.completedOrders}}</h3>
+      <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">{{lang.amount}}</th>
+              <th scope="col" style = "word-wrap: break-word;">{{lang.productTitle}}</th>
+              <th scope="col" style = "word-wrap: break-word;">{{lang.orderStatus}}</th>
+            </tr>
+          </thead>
+          <tbody>
+              <hr>
+
+              {% if completedOrders %}
+                   {% for completedOrder in completedOrders %}
+                      <tr>
+                      <th scope="row">{{completedOrder.productAmount}}</th>
+                      <td><a href = "/products/productdetail/{{completedOrder.product.id}}/">{{completedOrder.title}}</a></td>
+                      <td>{{completedOrder.orderStatus}}</td>
+                      </tr>
+                  {% endfor %}
+          {% else %}
+                  <div class="alert alert-warning">
+                      {{lang.noCompletedProduct}}
+                  </div>
+          {% endif %}
+
+          </tbody>
+      </table>
+      <!-- <br><hr style = "background-color: red; width:100%; height:0.1rem; border-radius:50%;"><br> -->
+      <br><br>
+
+  </div>
+
+
+  <!-- COMPLETED ORDERS END. -->
+
+</div>
+
+
+
+
+
+<br><br><br><br><br><br>
+
+<br><br><br><br><br><br>
+</div>
+</div>
+
+{% else %}
+
+
+<!-- <div class="jumbotron" id = "bg">
+    <h1>{{lang.pleaselogin}}</h1>
+</div> -->
+<br><br>
+
+
+<div class="container">
+<div class="row">
+<div class="col-md-6 col-lg-6 col-xs-12">
+<div class="container " style = "text-align: center; margin-right:3rem; ">
+<a href = "/products/allproducts/"><scan style = "font-size:2rem;"><strong>{{lang.orderProduct}}</strong><hr><br><img class="d-block " style = "width:20rem;  max-width: 100%;"src={% static 'img/products.png' %}></scan></a>
+</div>
+</div>
+
+
+<div class="col-md-6 col-lg-6 col-xs-12">
+
+<div id="myCarousel" style = "text-align:center;" class="carousel slide bg-inverse  ml-auto mr-auto" data-ride="carousel">
+  <scan style = "font-size:2rem;"><strong>En Çok Satılan Ürünler</strong><hr><br>
+
+
+  <ol class="carousel-indicators">
+    
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    <div class="carousel-item active">
+      <a href="/products/productdetail/{{firstSold.id}}/"><img class="d-block center" src="{{firstSold.productImage.url}}" alt="First slide"   style = "width:25rem; margin:auto auto; max-width: 100%;"></a>
+    </div>
+    {% for product in mostSoldProducts %}
+
+      <div class="carousel-item">
+        <a href="/products/productdetail/{{product.id}}/"><img class="d-block " src="{{product.productImage.url}}" alt="Second slide"  style = "width:25rem; margin:auto auto; max-width: 100%; "></a>
+      </div>
+
+
+      {% endfor %}
+
+  </div>
+  <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
+<br>
+<br>
+</div>
+
+</div>
+</div>
+{% endif %}
+
+
+
+
+
+
+
+
+
+{% endblock body %}
+
